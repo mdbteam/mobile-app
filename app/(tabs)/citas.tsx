@@ -1,14 +1,22 @@
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import tw from 'twrnc';
+import { MyCitasList } from '../../components/profile/MyCitasList';
 
-export default function CitasScreen() {
+export default function AppointmentsScreen() {
   return (
-    <SafeAreaView className="flex-1 bg-slate-950 p-4">
-      <Text className="text-xl font-bold text-white mb-4">Mis Citas</Text>
-      {/* Aquí reutilizaremos la lógica de MyCitasList */}
-      <View className="flex-1 justify-center items-center">
-         <Text className="text-slate-500">Aquí verás tus citas agendadas</Text>
+    <SafeAreaView style={tw`flex-1 bg-slate-950`}>
+      {/* Header */}
+      <View style={tw`px-4 py-3 border-b border-slate-800 bg-slate-900`}>
+        <Text style={tw`text-white font-bold text-xl`}>Agenda</Text>
+        <Text style={tw`text-slate-400 text-xs`}>Tus próximos compromisos</Text>
       </View>
+
+      {/* Contenido (Scrollable) */}
+      <ScrollView contentContainerStyle={tw`p-4 pb-20`}>
+        {/* Aquí renderizamos el componente maestro */}
+        <MyCitasList />
+      </ScrollView>
     </SafeAreaView>
   );
 }

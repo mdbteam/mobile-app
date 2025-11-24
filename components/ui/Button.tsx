@@ -7,7 +7,7 @@ interface ButtonProps extends TouchableOpacityProps {
 }
 
 export function Button({ title, isLoading, variant = 'primary', className, ...props }: ButtonProps) {
-  let bgClass = 'bg-cyan-500';
+  let bgClass = 'bg-amber-300';
   let textClass = 'text-slate-900';
 
   if (variant === 'secondary') {

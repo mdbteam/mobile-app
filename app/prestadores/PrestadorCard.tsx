@@ -26,7 +26,15 @@ function StarRating({ rating }: { readonly rating: number }) {
   );
 }
 
-export function PrestadorCard({ id, nombres, primer_apellido, fotoUrl, oficio, resumen, puntuacion }: PrestadorCardProps) {
+export function PrestadorCard({
+  id,
+  nombres,
+  primer_apellido,
+  fotoUrl,
+  oficio,
+  resumen,
+  puntuacion
+}: PrestadorCardProps) {
   const router = useRouter();
   const displayName = `${nombres.split(' ')[0]} ${primer_apellido}`;
 
@@ -53,7 +61,7 @@ export function PrestadorCard({ id, nombres, primer_apellido, fotoUrl, oficio, r
       <TouchableOpacity
         className="mt-4 bg-yellow-400 py-2 px-4 rounded-md items-center"
         activeOpacity={0.8}
-        onPress={() => router.push({ pathname: `/prestadores/${id}` } as any)}
+        onPress={() => router.push(`/prestadores/${id}`)}
       >
         <Text className="text-slate-900 font-bold text-sm">Ver Perfil</Text>
       </TouchableOpacity>

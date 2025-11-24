@@ -1,16 +1,16 @@
 import { MaterialIcons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 export function HeroSection() {
   const router = useRouter()
 
   return (
-    <View className="text-center max-w-3xl mx-auto px-4 py-10">
-      <Text className="text-4xl sm:text-6xl font-bold text-white font-poppins [text-shadow:0_0_20px_rgba(234,179,8,0.5)]">
-        Conecta con los mejores <Text className="text-amber-400">profesionales</Text> a tu alrededor.
+    <View className="max-w-3xl mx-auto px-4 py-10">
+      <Text style={styles.heroTitle}>
+        Conecta con los mejores <Text className="text-amber-400">profesionales</Text> a tu alrededor
       </Text>
-      <Text className="mt-6 text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto">
+      <Text style={styles.heroSubtitle}>
         Desde gasfitería hasta electricidad, encuentra el prestador de servicios verificado que necesitas para tu hogar o negocio.
       </Text>
 
@@ -39,3 +39,24 @@ export function HeroSection() {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  heroTitle: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    textShadowColor: 'rgba(234,179,8,0.5)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 20,
+    fontFamily: 'Poppins',
+  },
+  heroSubtitle: {
+    marginTop: 24,
+    fontSize: 18,
+    color: '#cbd5e1', // text-slate-300
+    maxWidth: 600,
+    alignSelf: 'center',
+    textAlign: 'center', // Justificado
+  },
+})

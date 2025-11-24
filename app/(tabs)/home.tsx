@@ -10,7 +10,7 @@ export default function HomePage() {
     <ScrollView className="flex-1 bg-slate-900">
       <View className="space-y-16 sm:space-y-24 py-10">
         <HeroSection />
-
+    
         <View className="max-w-5xl mx-auto px-4">
           <Text className="text-3xl font-bold text-white text-center mb-8">
             Explora por Categoría
@@ -18,7 +18,7 @@ export default function HomePage() {
           <FeaturedCategories />
         </View>
 
-        <HowItWorksSection />
+        <HowItWorksSection />  
 
         <Testimonials />
       </View>

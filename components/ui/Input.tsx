@@ -1,29 +1,32 @@
-import { forwardRef } from 'react';
+// components/ui/Input.tsx
+import React from 'react';
 import { Text, TextInput, TextInputProps, View } from 'react-native';
+import tw from 'twrnc';
 
 interface InputProps extends TextInputProps {
-  label?: string;
+  label: string;
   error?: string;
+  rightIcon?: React.ReactNode;
 }
 
-// 1. Definimos el componente en una constante primero
-const Input = forwardRef<TextInput, InputProps>(({ label, error, className, ...props }, ref) => {
-  return (
-    <View className="mb-4">
-      {label && <Text className="text-slate-300 mb-1 font-medium">{label}</Text>}
+export const Input = React.forwardRef<TextInput, InputProps>(({
+  label,
+  error,
+  rightIcon,
+  style,
+  ...textInputProps
+}, ref) => (
+  <View style={tw`mb-2`}>
+    <Text style={tw`text-white mb-1`}>{label}</Text>
+    <View style={tw`flex-row items-center border rounded p-2 ${error ? 'border-red-400' : 'border-gray-400'}`}>
       <TextInput
         ref={ref}
-        placeholderTextColor="#94a3b8"
-        className={`bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-lg focus:border-cyan-500 ${error ? 'border-red-500' : ''} ${className}`}
-        {...props}
+        style={[tw`flex-1 text-white`, style]}
+        placeholderTextColor="gray"
+        {...textInputProps}
       />
-      {error && <Text className="text-red-400 text-xs mt-1">{error}</Text>}
+      {rightIcon && <View>{rightIcon}</View>}
     </View>
-  );
-});
-
-// 2. Asignamos el displayName para callar a ESLint
-Input.displayName = 'Input';
-
-// 3. Lo exportamos
-export { Input };
+    {error && <Text style={tw`text-red-400 mt-1`}>{error}</Text>}
+  </View>
+));
