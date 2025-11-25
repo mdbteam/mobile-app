@@ -13,7 +13,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 
-// 👇 Importamos el componente de tarjeta que ya creaste
+// 👇 1. IMPORTAMOS EL COMPONENTE CARD CORRECTO
+// Asegúrate de que esta ruta sea la correcta según tu estructura
 import { PrestadorCard } from '../../components/prestadores/PrestadorCard';
 
 // --- INTERFAZ ---
@@ -51,19 +52,17 @@ export default function PrestadoresIndexScreen() {
   const params = useLocalSearchParams();
   const { width } = useWindowDimensions();
 
-  // --- 📏 LÓGICA DE GRILLA ROBUSTA (No tocar) ---
-  // Padding horizontal del contenedor principal (px-4 = 16px * 2 lados = 32px)
-  const CONTAINER_PADDING = 32; 
-  const GAP = 12; // Espacio entre tarjetas
+  // --- 📏 LÓGICA DE GRILLA ---
+  const CONTAINER_PADDING = 32; // 16px por lado
+  const GAP = 12; 
 
-  // Definir columnas: 2 para Móvil, 4 para Tablet/Web
+  // 2 columnas en Móvil, 4 en Web/Tablet
   const numColumns = width > 768 ? 4 : 2;
 
-  // Cálculo del ancho disponible total restando márgenes y espacios
   const totalGapSize = (numColumns - 1) * GAP;
   const availableWidth = width - CONTAINER_PADDING - totalGapSize;
   
-  // 🔥 CLAVE: Math.floor() y restar 1px extra para evitar errores de sub-píxeles que cortan la vista
+  // Restamos 1px de seguridad
   const cardWidth = Math.floor(availableWidth / numColumns) - 1;
 
   const categoria = params.categoria as string;
@@ -76,10 +75,9 @@ export default function PrestadoresIndexScreen() {
 
   const renderItem = ({ item }: { item: PrestadorMovil }) => {
     const id = item.id || item.id_usuario;
-    
-    // Validación de seguridad: Si no hay ID, no renderizamos para evitar crash
     if (!id) return null;
 
+    // 👇 2. USAMOS TU COMPONENTE "PRESTADORCARD"
     return (
       <PrestadorCard
         id={String(id)}
@@ -89,7 +87,7 @@ export default function PrestadoresIndexScreen() {
         oficio={item.oficios?.[0] || 'Profesional'}
         resumen={item.resumen || `Experto en ${item.oficios?.[0] || 'servicios'}.`}
         puntuacion={item.puntuacion_promedio || 0}
-        // 👇 LE PASAMOS EL ANCHO CALCULADO EXACTO
+        // 👇 LE PASAMOS EL ANCHO CALCULADO
         style={{ width: cardWidth }} 
       />
     );
@@ -105,9 +103,9 @@ export default function PrestadoresIndexScreen() {
           <ArrowLeft size={20} color="white" />
         </TouchableOpacity>
         <View style={tw`flex-1`}>
-          <Text style={tw`text-white text-lg font-bold`}>Profesionales</Text>
+          <Text style={tw`text-white text-lg font-bold`}>Resultados</Text>
           <Text style={tw`text-slate-400 text-xs`} numberOfLines={1}>
-            {categoria ? `Filtro: ${categoria}` : q ? `Búsqueda: "${q}"` : 'Todos los expertos'}
+            {categoria ? `Filtro: ${categoria}` : q ? `Búsqueda: "${q}"` : 'Todos'}
           </Text>
         </View>
       </View>
@@ -118,32 +116,26 @@ export default function PrestadoresIndexScreen() {
         <View style={tw`flex-1 w-full items-center`}>
           <FlatList
             data={prestadores}
-            // Clave dinámica para forzar re-render al rotar pantalla
             key={`grid-${numColumns}`} 
             numColumns={numColumns}
             renderItem={renderItem}
             keyExtractor={(item, index) => String(item.id || item.id_usuario || index)}
             
-            // Padding del contenedor (debe coincidir con CONTAINER_PADDING / 2)
-            contentContainerStyle={tw`p-4 pb-20`}
-            
-            // 👇 GAP NATIVO: Maneja el espacio entre columnas automáticamente
+            // Espaciado
+            contentContainerStyle={[tw`p-4 pb-20`, { gap: GAP }]}
             columnWrapperStyle={{ gap: GAP }}
             
-            // Centrar en Web y limitar ancho máximo
+            // Centrar en Web
             style={{ width: '100%', maxWidth: 1200 }} 
             
             ListEmptyComponent={
               <View style={tw`items-center mt-20 w-full px-6`}>
                 <Filter size={48} color="#334155" />
-                <Text style={tw`text-slate-500 mt-4 text-center font-medium text-base`}>
+                <Text style={tw`text-slate-500 mt-4 text-center font-medium`}>
                   No se encontraron profesionales.
                 </Text>
-                <Text style={tw`text-slate-600 text-center text-sm mt-1 mb-4`}>
-                  Prueba con otra categoría o término.
-                </Text>
-                <TouchableOpacity onPress={() => router.back()} style={tw`bg-slate-800 px-6 py-3 rounded-full border border-slate-700`}>
-                  <Text style={tw`text-cyan-400 font-bold`}>Intentar otra búsqueda</Text>
+                <TouchableOpacity onPress={() => router.back()} style={tw`bg-slate-800 px-6 py-3 rounded-full border border-slate-700 mt-4`}>
+                  <Text style={tw`text-cyan-400 font-bold`}>Volver</Text>
                 </TouchableOpacity>
               </View>
             }
