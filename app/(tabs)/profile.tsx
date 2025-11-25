@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
+import { MyReviewsTab } from '../../components/profile/MyReviewsTab';
 import { useAuthStore } from '../../store/authStore';
-
 
 import { MyCitasList } from '../../components/profile/MyCitasList';
 import { MyProfileForm } from '../../components/profile/MyProfileForm';
@@ -23,19 +23,7 @@ function MyExperienceTab() {
   );
 }
 
-function MyReviewsTab() {
-  return (
-    <View style={tw`p-6 bg-slate-800 rounded-xl border border-slate-700 min-h-[200px] justify-center items-center`}>
-      <MessageSquare size={40} color="#475569" style={tw`mb-2`} />
-      <Text style={tw`text-slate-300 text-center`}>Reseñas Recibidas</Text>
-      <Text style={tw`text-slate-500 text-xs mt-2`}>Próximamente...</Text>
-    </View>
-  );
-}
 
-// ==========================================
-// 👤 COMPONENTE HEADER (Tarjeta de Resumen)
-// ==========================================
 const ProfileHeader = ({ nombres, primer_apellido, fotoUrl, oficio, resumen, estaVerificado }: any) => (
   <View style={tw`items-center mb-8`}>
     <View style={tw`relative`}>

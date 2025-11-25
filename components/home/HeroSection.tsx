@@ -1,6 +1,7 @@
-import { MaterialIcons } from '@expo/vector-icons'
-import { useRouter } from 'expo-router'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons';
+import * as Linking from "expo-linking";
+import { useRouter } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export function HeroSection() {
   const router = useRouter()
@@ -29,7 +30,7 @@ export function HeroSection() {
         <TouchableOpacity
           className="bg-slate-700 p-4 rounded-lg flex-row items-center justify-center"
           activeOpacity={0.8}
-          onPress={() => router.push({ pathname: "/postular" } as any)}
+          onPress={() => Linking.openURL("https://test-chambee.vercel.app/postular")}
         >
           <Text className="text-white text-base font-semibold">
             Quiero ser Prestador

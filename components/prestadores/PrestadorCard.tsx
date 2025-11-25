@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import tw from 'twrnc'; // 👈 Importamos twrnc
+import tw from 'twrnc';
 
 interface PrestadorCardProps {
   readonly id: string;
@@ -10,6 +10,7 @@ interface PrestadorCardProps {
   readonly oficio: string;
   readonly resumen: string;
   readonly puntuacion: number;
+  readonly style?: any; // 👈 AGREGADO: Para recibir el ancho dinámico
 }
 
 function StarRating({ rating }: { readonly rating: number }) {
@@ -18,47 +19,67 @@ function StarRating({ rating }: { readonly rating: number }) {
   return (
     <View style={tw`flex-row items-center`}>
       {[...Array(fullStars)].map((_, i) => (
-        <Text key={`full-${i}`} style={tw`text-yellow-400`}>★</Text>
+        <Text key={`full-${i}`} style={tw`text-yellow-400 text-xs`}>★</Text>
       ))}
       {[...Array(emptyStars)].map((_, i) => (
-        <Text key={`empty-${i}`} style={tw`text-slate-600`}>★</Text>
+        <Text key={`empty-${i}`} style={tw`text-slate-600 text-xs`}>★</Text>
       ))}
     </View>
   );
 }
 
-export function PrestadorCard({ id, nombres, primer_apellido, fotoUrl, oficio, resumen, puntuacion }: PrestadorCardProps) {
+export function PrestadorCard({ 
+  id, 
+  nombres, 
+  primer_apellido, 
+  fotoUrl, 
+  oficio, 
+  resumen, 
+  puntuacion, 
+  style // 👈 Recibimos el estilo
+}: PrestadorCardProps) {
   const router = useRouter();
   const displayName = `${nombres.split(' ')[0]} ${primer_apellido}`;
 
   return (
-    <View style={tw`bg-slate-800 rounded-lg border border-slate-700 p-4 flex-col h-full`}>
-      <View style={tw`flex-1`}>
-        <View style={tw`flex-row items-center`}>
+    // 👇 APLICAMOS EL ESTILO AQUÍ (width dinámico)
+    <View style={[tw`bg-slate-800 rounded-xl border border-slate-700 p-3 flex-col h-full justify-between`, style]}>
+      
+      <View>
+        {/* Header: Foto + Datos */}
+        <View style={tw`flex-row items-center mb-2`}>
           <Image 
-            source={{ uri: fotoUrl }}
-            style={tw`h-20 w-20 rounded-lg mr-4`}
+            source={{ uri: fotoUrl || 'https://via.placeholder.com/150' }}
+            style={tw`h-12 w-12 rounded-full mr-3 bg-slate-700`}
           />
-          <View style={tw`flex-1`}>
-            <Text style={tw`text-xl font-bold text-slate-100`}>{displayName}</Text>
-            <Text style={tw`text-sm text-cyan-400`}>{oficio}</Text>
-            <View style={tw`mt-1 flex-row items-center`}>
+          <View style={tw`flex-1 overflow-hidden`}>
+            <Text style={tw`text-base font-bold text-slate-100`} numberOfLines={1}>
+              {displayName}
+            </Text>
+            <Text style={tw`text-xs text-cyan-400 font-bold uppercase`} numberOfLines={1}>
+              {oficio}
+            </Text>
+            <View style={tw`flex-row items-center mt-0.5`}>
               <StarRating rating={puntuacion} />
-              <Text style={tw`text-xs text-slate-400 ml-2`}>({puntuacion.toFixed(1)})</Text>
+              <Text style={tw`text-[10px] text-slate-400 ml-1`}>({puntuacion.toFixed(1)})</Text>
             </View>
           </View>
         </View>
-        <Text style={tw`mt-4 text-slate-300 text-sm flex-1`} numberOfLines={3}>
+
+        {/* Resumen */}
+        <Text style={tw`text-slate-400 text-xs leading-4 mb-3`} numberOfLines={2}>
             {resumen}
         </Text>
       </View>
 
+      {/* Botón */}
       <TouchableOpacity
-        style={tw`mt-4 bg-yellow-400 py-2 px-4 rounded-md items-center`}
+        style={tw`bg-yellow-500 py-2 rounded-lg items-center mt-auto`}
         activeOpacity={0.8}
-        onPress={() => router.push({ pathname: `/prestadores/${id}` } as any)}
+        // Ajusta la ruta según cómo se llame tu carpeta (singular o plural)
+        onPress={() => router.push(`/prestadores/${id}` as any)}
       >
-        <Text style={tw`text-slate-900 font-bold text-sm`}>Ver Perfil</Text>
+        <Text style={tw`text-slate-900 font-bold text-xs uppercase`}>Ver Perfil</Text>
       </TouchableOpacity>
     </View>
   );
